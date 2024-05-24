@@ -1,0 +1,21 @@
+{
+  "name": "chatbot",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run ./src/index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@wppconnect-team/wppconnect": "^1.30.3",
+    "csv-writer": "^1.6.0",
+    "fs-extra": "^11.2.0",
+    "moment": "^2.30.1",
+    "sulla": "^2.4.0"
+  }
+}
