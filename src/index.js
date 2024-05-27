@@ -9,7 +9,6 @@ create({ session: "support" })
 
 async function init(client) {
   console.log("Bot está sendo iniciado...");
-  let options = new Map();
 
   await client
     .sendText(
@@ -230,7 +229,6 @@ async function init(client) {
           .catch((erro) => {
             console.error("Error when sending: ", erro);
           });
-        options.delete(chatId);
         delete sessions[chatId];
       } else if (message.body.toLowerCase() === "não") {
         userSession.stage = 2;
