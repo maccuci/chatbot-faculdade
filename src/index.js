@@ -33,16 +33,10 @@ async function init(client) {
 
     const userSession = sessions[chatId];
 
-    //Está dando algum conflito com todas as conversas.
-
-    // if (options.get(chatId) == null) {
-    //   await client.sendText(
-    //     chatId,
-    //     "Olá! Seja bem-vindo ao sistema automática de consultas. Escolha uma das opções abaixo:\n1. Agendar consulta\n2. Verificar consulta ativa"
-    //   );
-    //   options.set(chatId, true);
-    //   return;
-    // }
+    //test
+    if(!message.body.contains("iniciar") && userSession === null) {
+      return;
+    }
 
     if (userSession.stage === 0) {
       if (message.body === "1") {
@@ -88,15 +82,6 @@ async function init(client) {
             });
         }
         delete sessions[chatId];
-      } else {
-        await client
-          .sendText(chatId, "Opção inválida. Por favor, escolha 1 ou 2.")
-          .then((result) => {
-            console.log("Result: ", result);
-          })
-          .catch((erro) => {
-            console.error("Error when sending: ", erro);
-          });
       }
     } else if (userSession.stage === 1) {
       userSession.name = message.body;
