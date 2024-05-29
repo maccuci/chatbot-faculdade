@@ -1,6 +1,6 @@
 import { create } from "@wppconnect-team/wppconnect";
 import moment from "moment";
-import { isAvailable, saveAppointment, readAppointments } from "./utils/csv";
+import { isAvailable, saveAppointment, readAppointments } from "./csv";
 import { NUMBER } from "./utils/constants";
 
 create({ session: "support" })

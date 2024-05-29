@@ -2,7 +2,7 @@ import { existsSync, writeFileSync, readFileSync } from "fs";
 import { createObjectCsvWriter } from "csv-writer";
 import moment from "moment";
 
-const PATH = "../consultas.csv";
+const PATH = "./consultas.csv";
 
 export const readAppointments = () => {
   if (!existsSync(PATH)) writeFileSync(PATH, "chatId,nome,data\n");
