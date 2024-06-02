@@ -1,7 +1,6 @@
 import { create } from "@wppconnect-team/wppconnect";
 import moment from "moment";
 import { isAvailable, saveAppointment, readAppointments } from "./csv";
-import { NUMBER } from "./utils/constants";
 
 create({ session: "support" })
   .then((client) => init(client))
@@ -10,19 +9,8 @@ create({ session: "support" })
 async function init(client) {
   console.log("Bot está sendo iniciado...");
 
-  await client
-    .sendText(
-      NUMBER,
-      "👋 Olá! Bem-vindo ao consultório odontológico. Como posso ajudar?\n1. Agendar consulta\n2. Verificar consulta ativa"
-    )
-    .then((result) => {
-      console.log("Result: ", result);
-    })
-    .catch((erro) => {
-      console.error("Error when sending: ", erro);
-    });
-
   const sessions = {};
+  const options = new Map();
 
   client.onMessage(async (message) => {
     const chatId = message.from;
@@ -33,8 +21,16 @@ async function init(client) {
 
     const userSession = sessions[chatId];
 
-    //test
-    if(!message.body.contains("iniciar") && userSession === null) {
+    if (userSession === null) {
+      return;
+    }
+
+    if (!options.has(chatId)) {
+      await client.sendText(
+        chatId,
+        "Olá! Seja bem-vindo ao sistema automática de consultas. Escolha uma das opções abaixo:\n1. Agendar consulta\n2. Verificar consulta ativa"
+      );
+      options.set(chatId, true);
       return;
     }
 
@@ -81,6 +77,7 @@ async function init(client) {
               console.error("Error when sending: ", erro);
             });
         }
+
         delete sessions[chatId];
       }
     } else if (userSession.stage === 1) {
@@ -214,6 +211,7 @@ async function init(client) {
           .catch((erro) => {
             console.error("Error when sending: ", erro);
           });
+        options.delete(chatId);
         delete sessions[chatId];
       } else if (message.body.toLowerCase() === "não") {
         userSession.stage = 2;
