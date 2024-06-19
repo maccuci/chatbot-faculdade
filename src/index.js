@@ -1,6 +1,7 @@
 import { create } from "@wppconnect-team/wppconnect";
 import moment from "moment";
 import { isAvailable, saveAppointment, readAppointments } from "./csv";
+import { NUMBER } from "./utils/constants";
 
 create({ session: "support" })
   .then((client) => init(client))
@@ -15,15 +16,15 @@ async function init(client) {
   client.onMessage(async (message) => {
     const chatId = message.from;
 
+    if (message.isGroupMsg || message.fromMe) {
+      return;
+    }
+
     if (!sessions[chatId]) {
       sessions[chatId] = { stage: 0 };
     }
 
     const userSession = sessions[chatId];
-
-    if (userSession === null) {
-      return;
-    }
 
     if (!options.has(chatId)) {
       await client.sendText(
@@ -211,6 +212,12 @@ async function init(client) {
           .catch((erro) => {
             console.error("Error when sending: ", erro);
           });
+        await client.sendText(
+          NUMBER,
+          `O consultório acaba te der uma nova consulta agendada. Segue detalhes:\nPaciente: ${
+            userSession.name
+          }\nData: ${moment(userSession.dateTime).format("YYYY-MM-DD HH:mm")}`
+        );
         options.delete(chatId);
         delete sessions[chatId];
       } else if (message.body.toLowerCase() === "não") {

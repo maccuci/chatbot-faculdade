@@ -1,5 +1,6 @@
 import express from "express";
 import axios from "axios";
+import { isAvailable, saveAppointment } from "./csv";
 
 const app = express();
 app.use(express.json());
@@ -120,6 +121,12 @@ app.post("/webhook", async (req, res) => {
         cpf: userCPF,
         problema: userProblem,
         data: userDate,
+      });
+
+      await saveAppointment({
+        chatId: chatId,
+        nome: `${userName}-${userCPF}`,
+        data: moment(userDate).format("YYYY-MM-DD HH:mm"),
       });
 
       await sendMessage(
