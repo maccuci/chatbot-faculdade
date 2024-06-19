@@ -32,5 +32,9 @@ bun install
 Write-Host "Tudo finalizado. Iniciando o bot..."
 Start-Sleep -Seconds 2
 
-# Inicia o bot
-bun dev
+Start-Process -NoNewWindow -FilePath "bun" -ArgumentList "dev"
+
+Write-Host "Bot iniciado com sucesso. Pressione Ctrl+C para encerrar o bot e fechar o PowerShell."
+
+# Aguarda o usuário pressionar Ctrl+C para encerrar
+while ($true) { Start-Sleep -Seconds 1 }
